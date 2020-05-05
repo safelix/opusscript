@@ -26,7 +26,9 @@ bind:
 init: autogen configure bind
 compile: build_dir
 	em++ ${FLAGS} --bind -o $(BUILD)/opusscript_native_wasm.js src/opusscript_encoder.cpp ${LIBOPUS}/.libs/libopus.a; \
-	cp -f opus-native/COPYING $(BUILD)/COPYING.libopus;
 
 clean:
 	rm -rf $(BUILD) $(LIBOPUS)/a.out $(LIBOPUS)/a.out.js $(LIBOPUS)/a.out.wasm
+
+copy_licence:
+	cp -f opus-native/COPYING $(BUILD)/COPYING.libopus;
