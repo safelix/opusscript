@@ -124,7 +124,7 @@ cleanconfig:
 # 
 ############################################################
 .PHONY: copy_opusscript.js copy_licence
-install: copy_opusscript.js copy_licence
+install: cleanbuild copy_opusscript.js copy_licence
 
 # create distribution directory
 $(DIST)/:
