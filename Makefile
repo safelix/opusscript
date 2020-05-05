@@ -8,7 +8,7 @@ FLAGS=\
  -Wall \
  -O3 \
  --bind \
- --llvm-lto 3 \
+ -flto \
  -s ALLOW_MEMORY_GROWTH=1 \
  --memory-init-file 0 \
  -s NO_FILESYSTEM=1 \
