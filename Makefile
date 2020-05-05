@@ -16,13 +16,13 @@ configure:
 bind:
 	cd $(LIBOPUS); \
 	emmake make; \
-	rm a.out; \
-	rm a.out.js \
-	rm a.out.wasm
+
 init: autogen configure bind
 compile:
-	rm -rf $(BUILD); \
 	mkdir -p $(BUILD); \
 	em++ ${EMCC_OPTS} ${EMCC_NASM_OPTS} --bind -o $(BUILD)/opusscript_native_nasm.js src/opusscript_encoder.cpp ${LIBOPUS}/.libs/libopus.a; \
 	em++ ${EMCC_OPTS} ${EMCC_WASM_OPTS} --bind -o $(BUILD)/opusscript_native_wasm.js src/opusscript_encoder.cpp ${LIBOPUS}/.libs/libopus.a; \
 	cp -f opus-native/COPYING $(BUILD)/COPYING.libopus;
+
+clean:
+	rm -rf $(BUILD) $(LIBOPUS)/a.out $(LIBOPUS)/a.out.js $(LIBOPUS)/a.out.wasm
