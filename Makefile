@@ -1,6 +1,7 @@
 LIBOPUS=./opus-native
 BUILD = ./build
 SRC = ./src
+DIST = ./dist
 
 CC = em++
 INCLUDES = -I $(LIBOPUS)/include/
@@ -118,7 +119,20 @@ cleanlibopus: cleantemps
 cleanconfig:
 	make -C $(LIBOPUS) distclean
 
+############################################################
+# make install: Install Required Files into DIST Directory
+# 
+############################################################
+.PHONY: copy_libopus.js copy_licence
+install: copy_libopus.js copy_licence
 
+# create distribution directory
+$(DIST)/:
+	mkdir -p $(DIST)/
 
-copy_licence:
-	cp -f opus-native/COPYING $(BUILD)/COPYING.libopus;
+copy_libopus.js: $(DIST)/ $(BUILD)/libopus.js
+	cp -f $(BUILD)/libopus.js $(DIST)/libopus.js; \
+	cp -f $(BUILD)/libopus.wasm $(DIST)/libopus.wasm
+
+copy_licence: $(DIST)/
+	cp -f opus-native/COPYING $(DIST)/COPYING.libopus;
