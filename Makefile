@@ -84,12 +84,12 @@ $(BUILD)/:
 	mkdir -p $@
 
 # compile the wrapper to bitcode object file (wasm bitcode)
-wrapper: $(BUILD)/ $(BUILD)/wrapper.o			# PHONY target
+wrapper: $(BUILD)/ $(BUILD)/opusscript.o			# PHONY target
 $(BUILD)/opusscript.o: $(SRC)/opusscript.cpp
 	$(CC) ${FLAGS} $(INCLUDES) -c -o $@ $^
 
 # statically link wrapper and libopus (wasm bitcode)
-link: $(BUILD)/ $(BUILD)/libopus.js			# PHONY target
+link: $(BUILD)/ $(BUILD)/opusscript.js			# PHONY target
 $(BUILD)/opusscript.js: ${LIBOPUS}/.libs/libopus.so $(BUILD)/opusscript.o
 	$(CC) $(FLAGS) $(INCLUDES) -o $@ $^ 
 
