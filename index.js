@@ -1,5 +1,3 @@
-"use strict";
-
 import * as opusscript_native from "dist/libopus.js" 
 
 var OpusApplication = {
@@ -100,4 +98,4 @@ OpusScript.Error = OpusError;
 OpusScript.VALID_SAMPLING_RATES = VALID_SAMPLING_RATES;
 OpusScript.MAX_PACKET_SIZE = MAX_PACKET_SIZE;
 
-module.exports = OpusScript;
+window.OpusScript = OpusScript;
