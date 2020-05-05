@@ -9,7 +9,7 @@ CONFIGURATIONS=\
 --disable-intrinsics\
 
 
-.PHONY: build_dir opusmakefile
+.PHONY: build_dir opusmakefile lib
 
 all: init compile
 
@@ -25,11 +25,13 @@ $(LIBOPUS)/Makefile:
 	./autogen.sh
 	emconfigure ./configure $(CONFIGURATIONS)
 
-bind:
+# compile the library to shared object file (wasm bitcode)
+lib: ${LIBOPUS}/.libs/libopus.so 	# PHONY target
+${LIBOPUS}/.libs/libopus.so: $(LIBOPUS)/Makefile
 	cd $(LIBOPUS); \
-	emmake make; \
+	emmake make;
 
-init: opusmakefile bind
+init: opusmakefile lib
 compile: build_dir
 	em++ ${FLAGS} --bind -o $(BUILD)/opusscript_native_wasm.js src/opusscript_encoder.cpp ${LIBOPUS}/.libs/libopus.a; \
 
