@@ -130,7 +130,7 @@ install: copy_opusscript.js copy_licence
 $(DIST)/:
 	mkdir -p $(DIST)/
 
-copy_opusscript.js: $(DIST)/ $(BUILD)/opusscript.js
+copy_opusscript.js: $(DIST)/ init build
 	cp -f $(BUILD)/opusscript.js $(DIST)/opusscript.js; \
 	cp -f $(BUILD)/opusscript.wasm $(DIST)/opusscript.wasm
 
