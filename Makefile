@@ -5,6 +5,7 @@ CC = em++
 FLAGS=\
  -Wall \
  -O3 \
+ --bind \
  --llvm-lto 3 \
  -s ALLOW_MEMORY_GROWTH=1 \
  --memory-init-file 0 \
@@ -44,7 +45,7 @@ ${LIBOPUS}/.libs/libopus.so: $(LIBOPUS)/Makefile
 
 init: opusmakefile lib
 compile: build_dir
-	$(CC) ${FLAGS} --bind -o $(BUILD)/opusscript_native_wasm.js src/opusscript_encoder.cpp ${LIBOPUS}/.libs/libopus.a; \
+	$(CC) ${FLAGS} -o $(BUILD)/opusscript_native_wasm.js src/opusscript_encoder.cpp ${LIBOPUS}/.libs/libopus.a; \
 
 clean:
 	rm -rf $(BUILD) $(LIBOPUS)/a.out $(LIBOPUS)/a.out.js $(LIBOPUS)/a.out.wasm
