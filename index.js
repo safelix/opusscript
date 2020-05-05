@@ -1,7 +1,6 @@
 "use strict";
 
-let opusscript_native_nasm = null;
-let opusscript_native_wasm = null;
+import * as opusscript_native from "dist/libopus.js" 
 
 var OpusApplication = {
     VOIP: 2048,
@@ -34,18 +33,6 @@ function OpusScript(samplingRate, channels, application, options) {
     this.channels = channels || 1;
     this.application = application || OpusApplication.AUDIO;
 
-    let opusscript_native = null;
-    if(this.options.wasm) {
-        if(!opusscript_native_wasm) {
-            opusscript_native_wasm = require("./build/opusscript_native_wasm.js")();
-        }
-        opusscript_native = opusscript_native_wasm;
-    } else {
-        if(!opusscript_native_nasm) {
-            opusscript_native_nasm = require("./build/opusscript_native_nasm.js")();
-        }
-        opusscript_native = opusscript_native_nasm;
-    }
     this.handler = new opusscript_native.OpusScriptHandler(this.samplingRate, this.channels, this.application);
 
     this.inPCMLength = MAX_FRAME_SIZE * this.channels * 2;
