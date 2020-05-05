@@ -1,5 +1,6 @@
 LIBOPUS=./opus-native
 BUILD = ./build
+SRC = ./src
 
 CC = em++
 INCLUDES = -I $(LIBOPUS)/include/
@@ -83,7 +84,7 @@ $(BUILD)/:
 
 # compile the wrapper to bitcode object file (wasm bitcode)
 wrapper: $(BUILD)/ $(BUILD)/wrapper.o			# PHONY target
-$(BUILD)/wrapper.o: src/opusscript_encoder.cpp
+$(BUILD)/wrapper.o: $(SRC)/opusscript_encoder.cpp
 	$(CC) ${FLAGS} $(INCLUDES) -c -o $@ $^
 
 # statically link wrapper and libopus (wasm bitcode)
