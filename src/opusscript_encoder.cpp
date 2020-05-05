@@ -1,6 +1,6 @@
 #include <emscripten/bind.h>
 
-#include "../opus-native/include/opus.h"
+#include "opus.h"
 
 #define APPLICATION OPUS_APPLICATION_AUDIO
 #define MAX_PACKET_SIZE 1276 * 3

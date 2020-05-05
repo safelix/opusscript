@@ -2,6 +2,8 @@ LIBOPUS=./opus-native
 BUILD = ./build
 
 CC = em++
+INCLUDES = -I $(LIBOPUS)/include/
+
 FLAGS=\
  -Wall \
  -O3 \
@@ -21,7 +23,7 @@ CONFIGURATIONS=\
 --disable-intrinsics\
 
 
-.PHONY: build_dir opusmakefile lib cleanmake cleanlib clean
+.PHONY: build_dir opusmakefile lib wrapper link cleanmake cleanlib clean
 
 all: init compile
 
@@ -44,8 +46,16 @@ ${LIBOPUS}/.libs/libopus.so: $(LIBOPUS)/Makefile
 	emmake make;
 
 init: opusmakefile lib
-compile: build_dir
-	$(CC) ${FLAGS} -o $(BUILD)/opusscript_native_wasm.js src/opusscript_encoder.cpp ${LIBOPUS}/.libs/libopus.a; \
+
+# compile the wraper to bitcode object file (wasm bitcode)
+wrapper: build $(BUILD)/wrapper.o			# PHONY target
+$(BUILD)/wrapper.o: src/opusscript_encoder.cpp
+	$(CC) ${FLAGS} $(INCLUDES) -c -o $@ $^
+
+# statically link wrapper and library (wasm bitcode)
+link: build $(BUILD)/libopus.js			# PHONY target
+$(BUILD)/libopus.js: ${LIBOPUS}/.libs/libopus.so $(BUILD)/wrapper.o
+	$(CC) $(FLAGS) $(INCLUDES) -o $@ $^ 
 
 clean:
 	rm -rf $(BUILD) $(LIBOPUS)/a.out $(LIBOPUS)/a.out.js $(LIBOPUS)/a.out.wasm
