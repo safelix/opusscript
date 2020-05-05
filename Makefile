@@ -4,6 +4,8 @@ BUILD = ./build
 CC = em++
 INCLUDES = -I $(LIBOPUS)/include/
 
+# Set Flags as proposed by:
+# https://developers.google.com/web/updates/2019/01/emscripten-npm
 FLAGS=\
  -Wall \
  -O3 \
