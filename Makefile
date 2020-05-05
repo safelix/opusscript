@@ -85,12 +85,12 @@ $(BUILD)/:
 
 # compile the wrapper to bitcode object file (wasm bitcode)
 wrapper: $(BUILD)/ $(BUILD)/wrapper.o			# PHONY target
-$(BUILD)/wrapper.o: $(SRC)/opusscript_encoder.cpp
+$(BUILD)/opusscript.o: $(SRC)/opusscript.cpp
 	$(CC) ${FLAGS} $(INCLUDES) -c -o $@ $^
 
 # statically link wrapper and libopus (wasm bitcode)
 link: $(BUILD)/ $(BUILD)/libopus.js			# PHONY target
-$(BUILD)/libopus.js: ${LIBOPUS}/.libs/libopus.so $(BUILD)/wrapper.o
+$(BUILD)/opusscript.js: ${LIBOPUS}/.libs/libopus.so $(BUILD)/opusscript.o
 	$(CC) $(FLAGS) $(INCLUDES) -o $@ $^ 
 
 
@@ -123,16 +123,16 @@ cleanconfig:
 # make install: Install Required Files into DIST Directory
 # 
 ############################################################
-.PHONY: copy_libopus.js copy_licence
-install: copy_libopus.js copy_licence
+.PHONY: copy_opusscript.js copy_licence
+install: copy_opusscript.js copy_licence
 
 # create distribution directory
 $(DIST)/:
 	mkdir -p $(DIST)/
 
-copy_libopus.js: $(DIST)/ $(BUILD)/libopus.js
-	cp -f $(BUILD)/libopus.js $(DIST)/libopus.js; \
-	cp -f $(BUILD)/libopus.wasm $(DIST)/libopus.wasm
+copy_opusscript.js: $(DIST)/ $(BUILD)/opusscript.js
+	cp -f $(BUILD)/opusscript.js $(DIST)/opusscript.js; \
+	cp -f $(BUILD)/opusscript.wasm $(DIST)/opusscript.wasm
 
 copy_licence: $(DIST)/
 	cp -f opus-native/COPYING $(DIST)/COPYING.libopus;
