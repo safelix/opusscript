@@ -6,7 +6,15 @@ EMCC_OPTS=-Wall -O3 --llvm-lto 3 -s ALLOW_MEMORY_GROWTH=1 --memory-init-file 0 -
 EMCC_NASM_OPTS=-s WASM=0
 EMCC_WASM_OPTS=-s WASM=1 -s WASM_ASYNC_COMPILATION=0
 
+.PHONY: build_dir
+
 all: init compile
+
+# create build folder
+build_dir: $(BUILD)/ # .PHONY target
+$(BUILD)/:
+	mkdir -p $@
+
 autogen:
 	cd $(LIBOPUS); \
 	./autogen.sh
@@ -18,8 +26,7 @@ bind:
 	emmake make; \
 
 init: autogen configure bind
-compile:
-	mkdir -p $(BUILD); \
+compile: build_dir
 	em++ ${EMCC_OPTS} ${EMCC_NASM_OPTS} --bind -o $(BUILD)/opusscript_native_nasm.js src/opusscript_encoder.cpp ${LIBOPUS}/.libs/libopus.a; \
 	em++ ${EMCC_OPTS} ${EMCC_WASM_OPTS} --bind -o $(BUILD)/opusscript_native_wasm.js src/opusscript_encoder.cpp ${LIBOPUS}/.libs/libopus.a; \
 	cp -f opus-native/COPYING $(BUILD)/COPYING.libopus;
