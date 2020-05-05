@@ -9,7 +9,7 @@ CONFIGURATIONS=\
 --disable-intrinsics\
 
 
-.PHONY: build_dir
+.PHONY: build_dir opusmakefile
 
 all: init compile
 
@@ -18,17 +18,18 @@ build_dir: $(BUILD)/ # .PHONY target
 $(BUILD)/:
 	mkdir -p $@
 
-autogen:
+# generate Makefile for libopus
+opusmakefile: $(LIBOPUS)/Makefile # .PHONY target
+$(LIBOPUS)/Makefile:
 	cd $(LIBOPUS); \
 	./autogen.sh
-configure:
-	cd $(LIBOPUS); \
 	emconfigure ./configure $(CONFIGURATIONS)
+
 bind:
 	cd $(LIBOPUS); \
 	emmake make; \
 
-init: autogen configure bind
+init: opusmakefile bind
 compile: build_dir
 	em++ ${FLAGS} --bind -o $(BUILD)/opusscript_native_wasm.js src/opusscript_encoder.cpp ${LIBOPUS}/.libs/libopus.a; \
 
