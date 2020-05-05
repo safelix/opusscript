@@ -23,9 +23,8 @@ CONFIGURATIONS=\
 --disable-intrinsics\
 
 
-.PHONY: init build_dir wrapper link cleanmake cleanlib clean
-
-all: init
+.PHONY: init build clean
+all: init build
 
 ############################################################
 # make init: Compiling libopus to WebAssembly
@@ -37,8 +36,8 @@ all: init
 # make libopus
 #
 ############################################################
-.PHONY: config libopus
-init: config libopus
+.PHONY: config libopus cleantemps
+init: config libopus cleantemps
 
 # configure Makefile for libopus
 config: $(LIBOPUS)/Makefile # .PHONY target
@@ -53,22 +52,36 @@ ${LIBOPUS}/.libs/libopus.so: $(LIBOPUS)/Makefile
 	cd $(LIBOPUS); \
 	emmake make
 
+cleantemps:
+	rm -rf $(LIBOPUS)/a.out $(LIBOPUS)/a.out.js $(LIBOPUS)/a.out.wasm
+	
 
-# create build folder
-build_dir: $(BUILD)/ # .PHONY target
+############################################################
+# make build: Compiling the libopus wrapper to JavaScript
+#
+# 1. To compile the wrapper, use:
+# make wrapper
+#
+# 2. To link wrapper and library, use:
+# make link
+#
+############################################################
+.PHONY: wrapper link
+build: wrapper link
+
+# create build directory
 $(BUILD)/:
 	mkdir -p $@
 
-# compile the wraper to bitcode object file (wasm bitcode)
-wrapper: build $(BUILD)/wrapper.o			# PHONY target
+# compile the wrapper to bitcode object file (wasm bitcode)
+wrapper: $(BUILD)/ $(BUILD)/wrapper.o			# PHONY target
 $(BUILD)/wrapper.o: src/opusscript_encoder.cpp
 	$(CC) ${FLAGS} $(INCLUDES) -c -o $@ $^
 
-# statically link wrapper and library (wasm bitcode)
-link: build $(BUILD)/libopus.js			# PHONY target
+# statically link wrapper and libopus (wasm bitcode)
+link: $(BUILD)/ $(BUILD)/libopus.js			# PHONY target
 $(BUILD)/libopus.js: ${LIBOPUS}/.libs/libopus.so $(BUILD)/wrapper.o
 	$(CC) $(FLAGS) $(INCLUDES) -o $@ $^ 
-
 
 
 ############################################################
@@ -90,9 +103,8 @@ clean: cleanbuild cleanlibopus cleanconfig
 cleanbuild:
 	rm -rf $(BUILD)
 
-cleanlibopus:
+cleanlibopus: cleantemps
 	emmake make -C $(LIBOPUS) clean
-	rm -rf $(LIBOPUS)/a.out $(LIBOPUS)/a.out.js $(LIBOPUS)/a.out.wasm
 
 cleanconfig:
 	make -C $(LIBOPUS) distclean
