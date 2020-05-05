@@ -9,7 +9,7 @@ CONFIGURATIONS=\
 --disable-intrinsics\
 
 
-.PHONY: build_dir opusmakefile lib cleanmake clean
+.PHONY: build_dir opusmakefile lib cleanmake cleanlib clean
 
 all: init compile
 
@@ -37,6 +37,9 @@ compile: build_dir
 
 clean:
 	rm -rf $(BUILD) $(LIBOPUS)/a.out $(LIBOPUS)/a.out.js $(LIBOPUS)/a.out.wasm
+
+cleanlib:
+	emmake make -C $(LIBOPUS) clean; \
 
 cleanmake:
 	make -C $(LIBOPUS) distclean
