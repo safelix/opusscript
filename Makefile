@@ -19,6 +19,10 @@ FLAGS=\
  -s EXPORTED_RUNTIME_METHODS="['setValue', 'getValue']" \
  -s EXPORTED_FUNCTIONS="['_malloc', '_opus_strerror']" \
 
+define UNUSED_FLAGS
+ -s STRICT=1 \
+
+endef
 
 CONFIGURATIONS=\
 --disable-extra-programs\
