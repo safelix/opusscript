@@ -13,7 +13,7 @@ FLAGS=\
  -flto \
  -s ALLOW_MEMORY_GROWTH=1 \
  --memory-init-file 0 \
- -s NO_FILESYSTEM=1 \
+ -s FILESYSTEM=0 \
  -s EXPORTED_RUNTIME_METHODS="['setValue', 'getValue']" \
  -s EXPORTED_FUNCTIONS="['_malloc', '_opus_strerror']" \
  -s MODULARIZE=1
