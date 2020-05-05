@@ -2,7 +2,17 @@ LIBOPUS=./opus-native
 BUILD = ./build
 
 CC = em++
-FLAGS=-Wall -O3 --llvm-lto 3 -s ALLOW_MEMORY_GROWTH=1 --memory-init-file 0 -s NO_FILESYSTEM=1 -s EXPORTED_RUNTIME_METHODS="['setValue', 'getValue']" -s EXPORTED_FUNCTIONS="['_malloc', '_opus_strerror']" -s MODULARIZE=1
+FLAGS=\
+ -Wall \
+ -O3 \
+ --llvm-lto 3 \
+ -s ALLOW_MEMORY_GROWTH=1 \
+ --memory-init-file 0 \
+ -s NO_FILESYSTEM=1 \
+ -s EXPORTED_RUNTIME_METHODS="['setValue', 'getValue']" \
+ -s EXPORTED_FUNCTIONS="['_malloc', '_opus_strerror']" \
+ -s MODULARIZE=1
+
 
 CONFIGURATIONS=\
 --disable-extra-programs\
