@@ -23,29 +23,41 @@ CONFIGURATIONS=\
 --disable-intrinsics\
 
 
-.PHONY: build_dir opusmakefile lib wrapper link cleanmake cleanlib clean
+.PHONY: init build_dir opusmakefile lib wrapper link cleanmake cleanlib clean
 
-all: init compile
+all: init
 
-# create build folder
-build_dir: $(BUILD)/ # .PHONY target
-$(BUILD)/:
-	mkdir -p $@
+############################################################
+# Init: Compiling libopus to wasm
+#
+# 1. To configure the libopus build system, use:
+# make opusmakefile 
+#
+# 2. To compile libopus with those configurations, use:
+# make lib
+#
+############################################################
+
+init: opusmakefile lib
 
 # generate Makefile for libopus
 opusmakefile: $(LIBOPUS)/Makefile # .PHONY target
 $(LIBOPUS)/Makefile:
 	cd $(LIBOPUS); \
-	./autogen.sh
+	./autogen.sh; \
 	emconfigure ./configure $(CONFIGURATIONS)
 
 # compile the library to shared object file (wasm bitcode)
 lib: ${LIBOPUS}/.libs/libopus.so 	# PHONY target
 ${LIBOPUS}/.libs/libopus.so: $(LIBOPUS)/Makefile
 	cd $(LIBOPUS); \
-	emmake make;
+	emmake make
 
-init: opusmakefile lib
+
+# create build folder
+build_dir: $(BUILD)/ # .PHONY target
+$(BUILD)/:
+	mkdir -p $@
 
 # compile the wraper to bitcode object file (wasm bitcode)
 wrapper: build $(BUILD)/wrapper.o			# PHONY target
