@@ -9,7 +9,7 @@ CONFIGURATIONS=\
 --disable-intrinsics\
 
 
-.PHONY: build_dir opusmakefile lib
+.PHONY: build_dir opusmakefile lib cleanmake clean
 
 all: init compile
 
@@ -37,6 +37,9 @@ compile: build_dir
 
 clean:
 	rm -rf $(BUILD) $(LIBOPUS)/a.out $(LIBOPUS)/a.out.js $(LIBOPUS)/a.out.wasm
+
+cleanmake:
+	make -C $(LIBOPUS) distclean
 
 copy_licence:
 	cp -f opus-native/COPYING $(BUILD)/COPYING.libopus;
