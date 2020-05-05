@@ -1,4 +1,4 @@
-import * as opusscript_native from "dist/libopus.js" 
+import * as opusscript_native from "dist/opusscipt.js" 
 
 var OpusApplication = {
     VOIP: 2048,

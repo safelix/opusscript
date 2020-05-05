@@ -3,7 +3,7 @@ opusscript
 ### JS bindings for libopus 1.3.1, ported with emscripten
 
 ```js
-import * as opusscript_native from "dist/libopus.js" 
+import * as opusscript_native from "dist/opusscript.js" 
 
 // 48kHz sampling rate, 20ms frame duration, stereo audio (2 channels)
 var samplingRate = 48000;
