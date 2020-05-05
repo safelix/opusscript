@@ -21,6 +21,7 @@ CONFIGURATIONS=\
 --disable-extra-programs\
 --disable-doc\
 --disable-intrinsics\
+--disable-stack-protector 	# https://github.com/xiph/opus/issues/138
 
 
 .PHONY: init build clean
@@ -54,7 +55,7 @@ ${LIBOPUS}/.libs/libopus.so: $(LIBOPUS)/Makefile
 
 cleantemps:
 	rm -rf $(LIBOPUS)/a.out $(LIBOPUS)/a.out.js $(LIBOPUS)/a.out.wasm
-	
+
 
 ############################################################
 # make build: Compiling the libopus wrapper to JavaScript
