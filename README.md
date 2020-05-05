@@ -3,7 +3,7 @@ opusscript
 ### JS bindings for libopus 1.3.1, ported with emscripten
 
 ```js
-var opusscript = require("opusscript");
+import * as opusscript_native from "dist/libopus.js" 
 
 // 48kHz sampling rate, 20ms frame duration, stereo audio (2 channels)
 var samplingRate = 48000;
@@ -24,16 +24,4 @@ var decodedPacket = encoder.decode(encodedPacket);
 
 // Delete the encoder when finished with it (Emscripten does not automatically call C++ object destructors)
 encoder.delete();
-```
-
-#### TypeScript
-
-Since this module wasn't written for TypeScript, you need to use `import = require` syntax.
-
-```ts
-// Import using:
-import OpusScript = require('opusscript');
-
-// and NOT:
-import OpusScript from 'opusscript';
 ```
