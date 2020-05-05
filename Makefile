@@ -11,6 +11,7 @@ FLAGS=\
  -O3 \
  --bind \
  -flto \
+ --closure 1 \
  -s ALLOW_MEMORY_GROWTH=1 \
  -s FILESYSTEM=0 \
  -s MODULARIZE=1 \
