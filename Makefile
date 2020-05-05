@@ -69,14 +69,35 @@ link: build $(BUILD)/libopus.js			# PHONY target
 $(BUILD)/libopus.js: ${LIBOPUS}/.libs/libopus.so $(BUILD)/wrapper.o
 	$(CC) $(FLAGS) $(INCLUDES) -o $@ $^ 
 
-clean:
-	rm -rf $(BUILD) $(LIBOPUS)/a.out $(LIBOPUS)/a.out.js $(LIBOPUS)/a.out.wasm
 
-cleanlib:
-	emmake make -C $(LIBOPUS) clean; \
 
-cleanmake:
+############################################################
+# make clean: Cleanup Compilation Steps
+#
+# 1. To cleanup results of 'make build', use:
+# make cleanbuild
+#
+# 2. To cleanup results of 'make libopus', use:
+# make cleanlibopus
+#
+# 3. To cleanup results of 'make config', use:
+# make cleanconfig
+#
+############################################################
+.PHONY: cleanbuild cleanlibopus cleanconfig
+clean: cleanbuild cleanlibopus cleanconfig
+
+cleanbuild:
+	rm -rf $(BUILD)
+
+cleanlibopus:
+	emmake make -C $(LIBOPUS) clean
+	rm -rf $(LIBOPUS)/a.out $(LIBOPUS)/a.out.js $(LIBOPUS)/a.out.wasm
+
+cleanconfig:
 	make -C $(LIBOPUS) distclean
+
+
 
 copy_licence:
 	cp -f opus-native/COPYING $(BUILD)/COPYING.libopus;
