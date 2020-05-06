@@ -3,6 +3,8 @@ BUILD = ./build
 SRC = ./src
 DIST = ./dist
 
+TARGET=js # html asm
+
 CC = em++
 INCLUDES = -I $(LIBOPUS)/include/
 
@@ -89,8 +91,8 @@ $(BUILD)/opusscript.o: $(SRC)/opusscript.cpp
 	$(CC) ${FLAGS} $(INCLUDES) -c -o $@ $^
 
 # statically link wrapper and libopus (wasm bitcode)
-link: $(BUILD)/ $(BUILD)/opusscript.js			# PHONY target
-$(BUILD)/opusscript.js: ${LIBOPUS}/.libs/libopus.so $(BUILD)/opusscript.o
+link: $(BUILD)/ $(BUILD)/opusscript.$(TARGET)			# PHONY target
+$(BUILD)/opusscript.$(TARGET): ${LIBOPUS}/.libs/libopus.so $(BUILD)/opusscript.o
 	$(CC) $(FLAGS) $(INCLUDES) -o $@ $^ 
 
 
@@ -123,16 +125,15 @@ cleanconfig:
 # make install: Install Required Files into DIST Directory
 # 
 ############################################################
-.PHONY: copy_opusscript.js copy_licence
-install: cleanbuild copy_opusscript.js copy_licence
+.PHONY: copy_opusscript copy_licence
+install: cleanbuild copy_opusscript copy_licence
 
 # create distribution directory
 $(DIST)/:
 	mkdir -p $(DIST)/
 
-copy_opusscript.js: $(DIST)/ init build
-	cp -f $(BUILD)/opusscript.js $(DIST)/opusscript.js; \
-	cp -f $(BUILD)/opusscript.wasm $(DIST)/opusscript.wasm
+copy_opusscript: $(DIST)/ init build
+	cp -f build/opusscript.{wasm,js,html} dist/
 
 copy_licence: $(DIST)/
 	cp -f opus-native/COPYING $(DIST)/COPYING.libopus;
