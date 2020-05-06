@@ -125,15 +125,18 @@ cleanconfig:
 # make install: Install Required Files into DIST Directory
 # 
 ############################################################
-.PHONY: copy_opusscript copy_licence
-install: cleanbuild copy_opusscript copy_licence
+.PHONY: copy_licence copy_opusscript
+install: cleanbuild copy_licence copy_opusscript
 
 # create distribution directory
 $(DIST)/:
 	mkdir -p $(DIST)/
 
-copy_opusscript: $(DIST)/ init build
-	cp -f build/opusscript.{wasm,js,html} dist/
-
 copy_licence: $(DIST)/
 	cp -f opus-native/COPYING $(DIST)/COPYING.libopus;
+
+copy_opusscript: $(DIST)/ init build
+	cp -f build/opusscript.wasm dist/
+	cp -f build/opusscript.js dist/
+	cp -f build/opusscript.html dist/
+
