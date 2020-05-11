@@ -12,18 +12,19 @@ INCLUDES = -I $(LIBOPUS)/include/
 # https://developers.google.com/web/updates/2019/01/emscripten-npm
 FLAGS=\
  -Wall \
- -O3 \
- --bind \
- -flto \
- --closure 1 \
- -s ALLOW_MEMORY_GROWTH=1 \
- -s FILESYSTEM=0 \
  -s MODULARIZE=1 \
+ --bind \
  -s EXPORT_ES6=1 \
  -s EXPORTED_RUNTIME_METHODS="['setValue', 'getValue']" \
- -s EXPORTED_FUNCTIONS="['_malloc', '_opus_strerror']" \
+ -s EXPORTED_FUNCTIONS="['_malloc', '_opus_strerror', '_opus_encoder_create']" \
 
 define UNUSED_FLAGS
+ -s ENVIRONMENT=web
+ -s FILESYSTEM=0 \
+ -O3 \
+ -flto \
+ -s ALLOW_MEMORY_GROWTH=1 \
+ --closure 1 \
  -s STRICT=1 \
 
 endef
