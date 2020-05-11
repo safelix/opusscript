@@ -1,4 +1,5 @@
-import * as opusscript_native from "dist/opusscipt.js" 
+import Module from "/dist/opusscript.js" 
+var opusscript_native = Module();
 
 var OpusApplication = {
     VOIP: 2048,
@@ -98,4 +99,4 @@ OpusScript.Error = OpusError;
 OpusScript.VALID_SAMPLING_RATES = VALID_SAMPLING_RATES;
 OpusScript.MAX_PACKET_SIZE = MAX_PACKET_SIZE;
 
-window.OpusScript = OpusScript;
+export default OpusScript;
