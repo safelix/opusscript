@@ -17,9 +17,9 @@ FLAGS=\
  -s EXPORT_ES6=1 \
  -s EXPORTED_RUNTIME_METHODS="['setValue', 'getValue']" \
  -s EXPORTED_FUNCTIONS="['_malloc', '_opus_strerror', '_opus_encoder_create']" \
+ -s EXPORT_NAME='loadModule' \
 
 define UNUSED_FLAGS
- --no-entry
  -s ENVIRONMENT=web
  -s FILESYSTEM=0 \
  -O3 \
