@@ -19,9 +19,9 @@ console.log('called loadModule()');
  * Import JS-Wrapper 
  * 
  *******************************************/
-import * as OpusModule from "/index.js";
+import loadOpus from "/index.js";
 
-OpusModule.OpusPromise.then(OpusScript => {
+loadOpus().then(OpusScript => {
 
     // 48kHz sampling rate, 20ms frame duration, stereo audio (2 channels)
     var samplingRate = 48000;
@@ -45,4 +45,4 @@ OpusModule.OpusPromise.then(OpusScript => {
 
 });
 
-console.log('finished main');
+console.log('called loadOpus()');
