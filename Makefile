@@ -19,6 +19,7 @@ FLAGS=\
  -s EXPORTED_FUNCTIONS="['_malloc', '_opus_strerror', '_opus_encoder_create']" \
 
 define UNUSED_FLAGS
+ --no-entry
  -s ENVIRONMENT=web
  -s FILESYSTEM=0 \
  -O3 \
@@ -139,4 +140,5 @@ copy_licence: $(DIST)/
 copy_opusscript: $(DIST)/ init build
 	cp -f build/opusscript.wasm dist/
 	cp -f build/opusscript.js dist/
+	cp -f build/opusscript.html dist/
 
