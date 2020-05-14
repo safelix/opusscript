@@ -140,5 +140,4 @@ copy_licence: $(DIST)/
 copy_opusscript: $(DIST)/ init build
 	cp -f build/opusscript.wasm dist/
 	cp -f build/opusscript.js dist/
-	cp -f build/opusscript.html dist/
 
