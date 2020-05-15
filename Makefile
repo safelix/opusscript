@@ -15,7 +15,7 @@ FLAGS=\
  -s MODULARIZE=1 \
  --bind \
  -s EXPORT_ES6=1 \
- -s EXPORTED_RUNTIME_METHODS="['setValue', 'getValue']" \
+ -s EXTRA_EXPORTED_RUNTIME_METHODS="['setValue', 'getValue']" \
  -s EXPORTED_FUNCTIONS="['_malloc', '_opus_strerror', '_opus_encoder_create']" \
  -s EXPORT_NAME='loadModule' \
 
