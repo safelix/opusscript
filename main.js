@@ -5,13 +5,15 @@
 import loadModule from "/dist/opusscript.js";
 
 // https://emscripten.org/docs/getting_started/FAQ.html#how-can-i-tell-when-the-page-is-fully-loaded-and-it-is-safe-to-call-compiled-functions
-loadModule().then(module => {
-
+(async () => {
+    
+    var module = await loadModule();
     console.log('module initiallized:');
     console.log(module);
 
     var encoder = new module.OpusScriptHandler(48000, 1, 2049);
-});
+    
+})();
 console.log('called loadModule()');
 
 
@@ -21,7 +23,11 @@ console.log('called loadModule()');
  *******************************************/
 import loadOpus from "/index.js";
 
-loadOpus().then(OpusScript => {
+(async () => {
+    
+    var OpusScript = await loadOpus();
+    console.log('OpusScript initiallized:');
+    console.log(OpusScript);
 
     // 48kHz sampling rate, 20ms frame duration, stereo audio (2 channels)
     var samplingRate = 48000;
@@ -43,6 +49,6 @@ loadOpus().then(OpusScript => {
     // Delete the encoder when finished with it (Emscripten does not automatically call C++ object destructors)
     encoder.delete();
 
-});
+})();
 
 console.log('called loadOpus()');
