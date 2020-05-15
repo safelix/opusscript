@@ -1,5 +1,27 @@
 import loadModule from "/dist/opusscript.js"
 
+// Constant definitions 
+const OpusApplication = {
+    VOIP: 2048,
+    AUDIO: 2049,
+    RESTRICTED_LOWDELAY: 2051
+};
+const OpusError = {
+    "0": "OK",
+    "-1": "Bad argument",
+    "-2": "Buffer too small",
+    "-3": "Internal error",
+    "-4": "Invalid packet",
+    "-5": "Unimplemented",
+    "-6": "Invalid state",
+    "-7": "Memory allocation fail"
+};
+const VALID_SAMPLING_RATES = [8000, 12000, 16000, 24000, 48000];
+const MAX_FRAME_SIZE = 48000 * 60 / 1000;
+const MAX_PACKET_SIZE = 1276 * 3;
+
+
+
 // loadOpus method which returns OpusPromise
 async function loadOpus() {
 
@@ -8,31 +30,10 @@ async function loadOpus() {
     // OpusScript Class
     class OpusScript {
 
-        // Constant definitions 
-        static Application = {
-            VOIP: 2048,
-            AUDIO: 2049,
-            RESTRICTED_LOWDELAY: 2051
-        };
-        static Error = {
-            "0": "OK",
-            "-1": "Bad argument",
-            "-2": "Buffer too small",
-            "-3": "Internal error",
-            "-4": "Invalid packet",
-            "-5": "Unimplemented",
-            "-6": "Invalid state",
-            "-7": "Memory allocation fail"
-        };
-        static VALID_SAMPLING_RATES = [8000, 12000, 16000, 24000, 48000];
-        static MAX_FRAME_SIZE = 48000 * 60 / 1000;
-        static MAX_PACKET_SIZE = 1276 * 3;
-
-
         // Constructor
         constructor(samplingRate, channels, application, options) {
 
-            if (VALID_SAMPLING_RATES.includes(samplingRate)) {
+            if (!VALID_SAMPLING_RATES.includes(samplingRate)) {
                 throw new RangeError(`${samplingRate} is an invalid sampling rate.`);
             }
             this.options = Object.assign({
@@ -66,7 +67,7 @@ async function loadOpus() {
 
             var len = this.handler._encode(this.inPCM.byteOffset, buffer.length, this.outOpusPointer, frameSize);
             if (len < 0) {
-                throw new Error("Encode error: " + this.Error["" + len]);
+                throw new Error("Encode error: " + OpusError["" + len]);
             }
 
             return Buffer.from(this.outOpus.subarray(0, len));
@@ -77,7 +78,7 @@ async function loadOpus() {
 
             var len = this.handler._decode(this.inOpusPointer, buffer.length, this.outPCM.byteOffset);
             if (len < 0) {
-                throw new Error("Decode error: " + this.Error["" + len]);
+                throw new Error("Decode error: " + OpusError["" + len]);
             }
 
             return Buffer.from(this.outPCM.subarray(0, len * this.channels * 2));
@@ -91,6 +92,13 @@ async function loadOpus() {
             module._free(this.outPCMPointer);
         }
     }
+
+    // set static constants
+    OpusScript.Application = OpusApplication;
+    OpusScript.Error = OpusError;
+    OpusScript.VALID_SAMPLING_RATES = VALID_SAMPLING_RATES;
+    OpusScript.MAX_FRAME_SIZE = MAX_FRAME_SIZE;
+    OpusScript.MAX_PACKET_SIZE = MAX_PACKET_SIZE;
 
     console.log('OpusScript initiallized');
     return OpusScript;
